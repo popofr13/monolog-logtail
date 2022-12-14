@@ -9,8 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Logtail\Monolog;
+namespace Logtail\Monolog\Handler;
 
+use Logtail\Monolog\LogtailClient;
 use Monolog\Handler\BufferHandler;
 use Monolog\Logger;
 
@@ -23,7 +24,7 @@ class LogtailHandler extends BufferHandler
      * @param string           $sourceToken     Logtail source token
      * @param int|string       $level           The minimum logging level at which this handler will be triggered
      * @param bool             $bubble          Whether the messages that are handled can bubble up the stack or not
-     * @param                  $endpoint        Logtail ingesting endpoint
+     * @param string           $endpoint        Logtail ingesting endpoint
      * @param int              $bufferLimit     How many entries should be buffered at most, beyond that the oldest items are removed from the buffer.
      * @param bool             $flushOnOverflow If true, the buffer is flushed when the max size has been reached, by default oldest entries are discarded
      */

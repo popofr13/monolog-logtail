@@ -2,8 +2,8 @@
 
 namespace Logtail\Monolog;
 
+use Logtail\Monolog\Handler\LogtailHandler;
 use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\BufferHandler;
 
 class MockLogtailClient {
     public $capturedData = NULL;
@@ -29,7 +29,7 @@ class LogtailHandlerTest extends \PHPUnit\Framework\TestCase {
 
 
     public function testHandlerWrite() {
-        $handler = new \Logtail\Monolog\SynchronousLogtailHandler('sourceTokenXYZ');
+        $handler = new Handler\SynchronousLogtailHandler('sourceTokenXYZ');
 
         // hack: replace the private client object
         $mockClient = new MockLogtailClient;
@@ -69,7 +69,7 @@ class LogtailHandlerTest extends \PHPUnit\Framework\TestCase {
 
 
     public function testHandlerWriteWithLineFormatter() {
-        $handler = new \Logtail\Monolog\SynchronousLogtailHandler('sourceTokenXYZ');
+        $handler = new Handler\SynchronousLogtailHandler('sourceTokenXYZ');
 
         // test a scenario when the formatter has been set, so the default formatter is not used
         // this is the case with e.g. Laravel
@@ -92,7 +92,7 @@ class LogtailHandlerTest extends \PHPUnit\Framework\TestCase {
     }
 
     public function testHandlerWriteWithBatchWrite() {
-        $synchronousHandler = new \Logtail\Monolog\SynchronousLogtailHandler('sourceTokenXYZ');
+        $synchronousHandler = new Handler\SynchronousLogtailHandler('sourceTokenXYZ');
         $handler = new LogtailHandler('sourceTokenXYZ');
 
         // hack: replace the private client object

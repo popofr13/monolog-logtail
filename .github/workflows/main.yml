@@ -8,7 +8,7 @@ on:
       - master
 
 jobs:
-  build:
+  monolog3:
 
     runs-on: ubuntu-latest
 
@@ -32,3 +32,31 @@ jobs:
 
     - name: Run test suite
       run: composer run-script test
+
+  monolog2:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Downgrade to Monolog 2
+        run: composer require monolog/monolog:^2
+
+      - name: Run test suite
+        run: composer run-script test

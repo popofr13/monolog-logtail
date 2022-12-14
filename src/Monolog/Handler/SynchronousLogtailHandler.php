@@ -9,14 +9,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Logtail\Monolog;
+namespace Logtail\Monolog\Handler;
 
+use Logtail\Monolog\Formatter\LogtailFormatter;
+use Logtail\Monolog\LogtailClient;
 use Monolog\Formatter\FormatterInterface;
 
 /**
  * Sends log to Logtail.
  */
 class SynchronousLogtailHandler extends \Monolog\Handler\AbstractProcessingHandler {
+
+    use CompatibilityProcessingHandlerTrait;
+
     /**
      * @var LogtailClient $client
      */
@@ -45,27 +50,10 @@ class SynchronousLogtailHandler extends \Monolog\Handler\AbstractProcessingHandl
     }
 
     /**
-     * @param array $record
-     */
-    protected function write(array $record): void {
-        $this->client->send($record["formatted"]);
-    }
-
-    /**
-     * @param array $records
-     * @return void
-     */
-    public function handleBatch(array $records): void
-    {
-        $formattedRecords = $this->getFormatter()->formatBatch($records);
-        $this->client->send($formattedRecords);
-    }
-
-    /**
-     * @return \Logtail\Monolog\LogtailFormatter
+     * @return LogtailFormatter
      */
     protected function getDefaultFormatter(): \Monolog\Formatter\FormatterInterface {
-        return new \Logtail\Monolog\LogtailFormatter();
+        return new LogtailFormatter();
     }
 
     public function getFormatter(): FormatterInterface
